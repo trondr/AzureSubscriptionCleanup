@@ -18,7 +18,7 @@ $expiredResourceGroups = Get-AzResourceGroup | Where-Object {
     } | Where-Object {
         $expireOn = $([DateTime]$_.Tags.expireOn)
         $now = $(Get-Date)
-        ($expireOn -lt $now) #ExpireOn datetime is in the passed => resource group has expired.
+        ($expireOn -lt $now) #ExpireOn datetime is in the past => resource group has expired.
     }
 $expiredResourceGroups | ForEach-Object {
     $resourceGroupName = $_.ResourceGroupName
