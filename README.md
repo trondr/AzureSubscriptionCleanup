@@ -1,7 +1,7 @@
 # AzureSubscriptionCleanup
 Azure function running on a schedule to cleanup expired resource groups. Resources groups with an expireOn tag will be processed.
 
-![DocumentationImage](/doc/images/ExpireOn.png)
+![DocumentationImage](/doc/images/expireOn.png)
 
 # How to install
 
