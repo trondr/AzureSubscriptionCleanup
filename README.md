@@ -20,3 +20,17 @@ New-AzFunctionApp -Name $FunctionAppName -ResourceGroupName $ResourceGroupName -
 Open function project in VSCode. Deploy manually:
 
 ![DocumentationImage](/doc/images/Deploy.png)
+
+
+# Enable System Managed Identiy
+
+In Function App Settings select Identity and enable system assigned identity.
+
+![DocumentationImage](/doc/images/Identity.png)
+
+# Assign the subscription contribution role
+
+In the subscription settings Access Control (IAM) grant the managed identity for the azure function the contributer role.
+
+![DocumentationImage](/doc/images/Contributor.png)
+
