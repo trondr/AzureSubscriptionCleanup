@@ -8,7 +8,9 @@ Azure function running on a schedule to cleanup expired resource groups. Resourc
 1. Create Function App
 
 ```PowerShell
-Connect-AzAccount
+$TenantId = "<your tenant id here>"
+$SubscriptionId = "<your subscrition id here>" 
+Connect-AzAccount -TenantId $TenantId -Subscription $SubscriptionId
 
 $ResourceGroupName = "Subscription-Automation-RG"
 $StorageAccountName = "subscriptionautomationsa"
@@ -17,7 +19,7 @@ $FunctionAppName = "AzureSubscriptionCleanup"
 
 New-AzResourceGroup -Name $ResourceGroupName -Location $Location
 New-AzStorageAccount -ResourceGroupName $ResourceGroupName -Name $StorageAccountName -Location $Location -SkuName "Standard_LRS"
-New-AzFunctionApp -Name $FunctionAppName -ResourceGroupName $ResourceGroupName -Location $Location -StorageAccountName $StorageAccountName -Runtime PowerShell
+New-AzFunctionApp -Name $FunctionAppName -ResourceGroupName $ResourceGroupName -Location $Location -StorageAccountName $StorageAccountName -Runtime PowerShell -OSType Windows -RuntimeVersion 7.4 -FunctionsVersion 4
 ```
 
 2.  Deploy function app
