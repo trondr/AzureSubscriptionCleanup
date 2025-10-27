@@ -3,6 +3,65 @@ Azure function running on a schedule to cleanup expired resource groups. Resourc
 
 ![DocumentationImage](/doc/images/expireOn.png)
 
+# Development Environment
+
+From PowerShell admin command prompt
+
+```
+Write-Host "Install Chocolatey"
+Set-ExecutionPolicy Bypass -Scope Process -Force -ErrorAction SilentlyContinue
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+Write-Host "Install Nuget"
+$PowerShellGetDatafolder = "C:\ProgramData\Microsoft\Windows\PowerShell\PowerShellGet"
+New-Item -Path $PowerShellGetDatafolder -ItemType Directory -Force -ErrorAction SilentlyContinue | Out-Null
+$nugetExe = "$PowerShellGetDatafolder\nuget.exe"
+if( (Test-Path -Path $nugetExe) -eq $false)
+{
+    Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$nugetExe"
+	. $nugetExe update -self
+
+} else
+{
+    . $nugetExe update -self
+}
+. $nugetExe sources add -source "https://api.nuget.org/v3/index.json" -name "nuget.org"
+
+choco feature enable -n=allowGlobalConfirmation
+choco install vscode -y
+choco install powershell-core --version=7.4.13 -y
+choco install azure-cli -y
+choco install azure-functions-core-tools -y
+choco install azurite -y
+choco install microsoftazurestorageexplorer -y
+choco install git -y
+choco install git-credential-winstore
+choco install sourcetree
+choco install googlechrome -y
+choco feature disable -n=allowGlobalConfirmation
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+Install-Module -Name Az -Scope AllUsers -Repository PSGallery -Force -Confirm:$false
+Install-Module posh-git -Scope AllUsers -Repository PSGallery -Force -Confirm:$false
+Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force -ErrorAction SilentlyContinue
+Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted
+```
+
+From new PowerShell admin command prompt:
+```
+Write-Host "Enable long paths"
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -PropertyType DWORD -Force
+$gitExe = "C:\Program Files\Git\bin\git.exe"
+& $gitExe config --global core.longpaths true
+```
+
+From PowerShell standard command prompt:
+```
+code --install-extension ms-azuretools.vscode-azurefunctions
+code --install-extension ms-vscode.powershell
+code --install-extension Azurite.azurite
+```
+
 # How to install
 
 1. Create Function App
